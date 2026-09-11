@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PS Lounge Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--bg:#07111f;--panel:#0d1a2b;--panel2:#111f33;--line:#20324a;--text:#edf5ff;--muted:#8da0b8;--primary:#3b82f6;--primary2:#2563eb;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;--cyan:#06b6d4;--shadow:0 18px 50px #0005}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#12335b 0,#07111f 38%,#050b13 100%);color:var(--text);font-family:Cairo,Arial,sans-serif;min-height:100vh}
+button,input,select{font:inherit}button{cursor:pointer;border:0}.hidden{display:none!important}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}.login-card{width:min(430px,100%);background:#0b1728ee;border:1px solid var(--line);border-radius:25px;padding:34px;box-shadow:var(--shadow);backdrop-filter:blur(15px)}
+.logo{width:70px;height:70px;border-radius:20px;background:linear-gradient(135deg,var(--primary),#7c3aed);display:grid;place-items:center;font-size:30px;margin:0 auto 18px;box-shadow:0 12px 35px #2563eb55}.login h1{text-align:center;margin:0 0 7px}.sub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:25px}
+.field{margin:13px 0}.field label{display:block;color:#b9c8da;font-size:13px;margin-bottom:7px}.field input,.field select{width:100%;background:#071220;border:1px solid var(--line);color:white;border-radius:12px;padding:13px;outline:none}.field input:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 3px #3b82f622}
+.btn{padding:11px 15px;border-radius:11px;color:white;background:var(--panel2);border:1px solid var(--line);transition:.2s}.btn:hover{transform:translateY(-1px);border-color:#416184}.primary{background:linear-gradient(135deg,var(--primary),var(--primary2));border:0}.success{background:#16a34a}.danger{background:#dc2626}.warning{background:#d97706}.full{width:100%;padding:14px;margin-top:8px}.error{color:#fca5a5;text-align:center;margin-top:12px;font-size:13px}
+.app{display:flex;min-height:100vh}.sidebar{width:255px;background:#081322eF;border-left:1px solid var(--line);padding:20px 14px;position:fixed;right:0;top:0;bottom:0;z-index:10;backdrop-filter:blur(18px)}.brand{display:flex;align-items:center;gap:12px;padding:8px 10px 25px}.brand .mini{width:43px;height:43px;border-radius:13px;background:linear-gradient(135deg,var(--primary),#7c3aed);display:grid;place-items:center}.brand strong{display:block}.brand small{color:var(--muted)}
+.nav{display:grid;gap:7px}.nav button{width:100%;background:transparent;color:#aebed2;text-align:right;padding:12px 13px;border-radius:11px;display:flex;gap:12px;align-items:center}.nav button:hover,.nav button.active{background:#14243a;color:#fff}.nav button.active{box-shadow:inset -3px 0 var(--primary)}.sidebar-bottom{position:absolute;bottom:18px;right:14px;left:14px}
+.main{margin-right:255px;width:calc(100% - 255px);padding:22px}.top{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:22px}.top h2{margin:0}.top p{margin:4px 0 0;color:var(--muted);font-size:13px}.top-actions{display:flex;gap:8px}
+.page{display:none}.page.active{display:block}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.stat{background:linear-gradient(145deg,#0e1d31,#0b1727);border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:var(--shadow)}.stat .ico{width:42px;height:42px;border-radius:12px;background:#17345a;display:grid;place-items:center;color:#7eb3ff;margin-bottom:12px}.stat span{color:var(--muted);font-size:12px}.stat b{display:block;font-size:24px;margin-top:4px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:#0b1727;border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:var(--shadow)}.card h3{margin:0 0 14px;font-size:16px}.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.devices{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.device{border:1px solid var(--line);border-radius:16px;padding:16px;background:#0c192a;position:relative;overflow:hidden}.device.busy{border-color:#1f9d55}.device.off{opacity:.65}.device-top{display:flex;justify-content:space-between;align-items:center}.device-name{font-weight:800;font-size:17px}.badge{font-size:11px;padding:5px 9px;border-radius:20px;background:#243449;color:#b8c9dc}.badge.green{background:#123c28;color:#6ee7a0}.badge.red{background:#431b20;color:#ff8f96}.price{font-size:14px;color:#7eb3ff;margin:13px 0}.device-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.device-actions .btn{font-size:12px;padding:9px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}.table{width:100%;border-collapse:collapse;min-width:650px}.table th,.table td{padding:12px;text-align:right;border-bottom:1px solid var(--line);font-size:13px}.table th{color:#91a7c1;background:#0d1b2d}.table tr:last-child td{border-bottom:0}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.product{background:#0d1b2c;border:1px solid var(--line);padding:14px;border-radius:14px}.product b{display:block;margin-bottom:7px}.product .row{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.product .actions{display:flex;gap:6px;margin-top:11px}.product .actions button{flex:1}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.form-grid .full-col{grid-column:1/-1}.modal{position:fixed;inset:0;background:#0009;display:grid;place-items:center;padding:20px;z-index:30}.modal-box{width:min(600px,100%);max-height:90vh;overflow:auto;background:#0b1728;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.close{background:#17253a;color:white;border-radius:10px;width:38px;height:38px}
+.notice{padding:12px 14px;border-radius:12px;background:#122844;color:#bcd7ff;margin-bottom:15px;font-size:13px}.empty{text-align:center;color:var(--muted);padding:35px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.kpi{padding:15px;background:#0e1d31;border:1px solid var(--line);border-radius:14px}.kpi small{color:var(--muted)}.kpi strong{display:block;font-size:21px;margin-top:5px}
+.toast{position:fixed;bottom:22px;left:22px;background:#102038;border:1px solid #315176;padding:12px 16px;border-radius:12px;z-index:50;box-shadow:var(--shadow)}
+@media(max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}.devices{grid-template-columns:repeat(2,1fr)}.products{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.sidebar{width:215px}.main{margin-right:215px;width:calc(100% - 215px)}}
+@media(max-width:720px){.sidebar{position:fixed;width:74px;padding:15px 9px}.brand div:not(.mini),.nav span,.sidebar-bottom span{display:none}.brand{justify-content:center;padding-bottom:20px}.nav button{justify-content:center}.sidebar-bottom{left:9px;right:9px}.main{margin-right:74px;width:calc(100% - 74px);padding:14px}.devices{grid-template-columns:1fr}.products{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.top{align-items:flex-start}.top-actions{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+
+<div id="login" class="login">
+  <div class="login-card">
+    <div class="logo"><i class="fa-solid fa-gamepad"></i></div>
+    <h1>PS Lounge Manager</h1>
+    <div class="sub">نظام إدارة مركز ألعاب متكامل</div>
+    <div class="field"><label>اسم المستخدم</label><input id="loginUser" value="admin" autocomplete="username"></div>
+    <div class="field"><label>كلمة المرور</label><input id="loginPass" type="password" value="admin" autocomplete="current-password"></div>
+    <button class="btn primary full" onclick="login()"><i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول</button>
+    <div id="loginError" class="error"></div>
+  </div>
+</div>
+
+<div id="app" class="app hidden">
+<aside class="sidebar">
+  <div class="brand"><div class="mini"><i class="fa-solid fa-gamepad"></i></div><div><strong>PS Lounge</strong><small>Management</small></div></div>
+  <nav class="nav">
+    <button class="active" onclick="showPage('dashboard',this)"><i class="fa-solid fa-chart-pie"></i><span>الرئيسية</span></button>
+    <button onclick="showPage('sessions',this)"><i class="fa-solid fa-stopwatch"></i><span>الجلسات</span></button>
+    <button onclick="showPage('devices',this)"><i class="fa-solid fa-tv"></i><span>الأجهزة</span></button>
+    <button onclick="showPage('sales',this)"><i class="fa-solid fa-cart-shopping"></i><span>المبيعات</span></button>
+    <button onclick="showPage('products',this)"><i class="fa-solid fa-boxes-stacked"></i><span>المخزون</span></button>
+    <button onclick="showPage('customers',this)"><i class="fa-solid fa-users"></i><span>العملاء</span></button>
+    <button onclick="showPage('reports',this)"><i class="fa-solid fa-file-invoice-dollar"></i><span>التقارير</span></button>
+    <button onclick="showPage('settings',this)"><i class="fa-solid fa-gear"></i><span>الإعدادات</span></button>
+  </nav>
+  <div class="sidebar-bottom"><button class="btn full" onclick="logout()"><i class="fa-solid fa-power-off"></i> <span>خروج</span></button></div>
+</aside>
+
+<main class="main">
+<header class="top">
+  <div><h2 id="pageTitle">لوحة التحكم</h2><p id="clock"></p></div>
+  <div class="top-actions"><button class="btn" onclick="openSessionModal()"><i class="fa-solid fa-plus"></i> جلسة جديدة</button><button class="btn" onclick="openSaleModal()"><i class="fa-solid fa-cart-plus"></i> بيع</button></div>
+</header>
+
+<section id="dashboard" class="page active">
+  <div class="stats">
+    <div class="stat"><div class="ico"><i class="fa-solid fa-tv"></i></div><span>الأجهزة المشغلة</span><b id="sBusy">0 / 0</b></div>
+    <div class="stat"><div class="ico"><i class="fa-solid fa-clock"></i></div><span>جلسات اليوم</span><b id="sSessions">0</b></div>
+    <div class="stat"><div class="ico"><i class="fa-solid fa-sack-dollar"></i></div><span>إيرادات اليوم</span><b id="sRevenue">0 ج</b></div>
+    <div class="stat"><div class="ico"><i class="fa-solid fa-box"></i></div><span>قيمة المبيعات</span><b id="sSales">0 ج</b></div>
+  </div>
+  <div class="card">
+    <div class="section-head"><h3>حالة الأجهزة</h3><button class="btn" onclick="showPage('devices')">إدارة الأجهزة</button></div>
+    <div id="dashDevices" class="devices"></div>
+  </div>
+</section>
+
+<section id="sessions" class="page">
+ <div class="card"><div class="section-head"><h3>الجلسات الحالية</h3><button class="btn primary" onclick="openSessionModal()">+ جلسة جديدة</button></div><div id="sessionsList"></div></div>
+</section>
+
+<section id="devices" class="page">
+ <div class="card"><div class="section-head"><h3>إدارة الأجهزة</h3><button class="btn primary" onclick="openDeviceModal()">+ إضافة جهاز</button></div><div id="devicesList" class="devices"></div></div>
+</section>
+
+<section id="sales" class="page">
+ <div class="card"><div class="section-head"><h3>المبيعات</h3><button class="btn primary" onclick="openSaleModal()">+ تسجيل بيع</button></div><div id="salesList"></div></div>
+</section>
+
+<section id="products" class="page">
+ <div class="card"><div class="section-head"><h3>المخزون والمنتجات</h3><button class="btn primary" onclick="openProductModal()">+ منتج</button></div><div id="productsList" class="products"></div></div>
+</section>
+
+<section id="customers" class="page">
+ <div class="card"><div class="section-head"><h3>العملاء</h3><button class="btn primary" onclick="openCustomerModal()">+ عميل</button></div><div id="customersList"></div></div>
+</section>
+
+<section id="reports" class="page">
+ <div class="stats">
+  <div class="stat"><span>إجمالي الجلسات</span><b id="rSessions">0</b></div>
+  <div class="stat"><span>إيرادات الجلسات</span><b id="rSessionMoney">0 ج</b></div>
+  <div class="stat"><span>إيرادات المبيعات</span><b id="rSalesMoney">0 ج</b></div>
+  <div class="stat"><span>الإجمالي</span><b id="rTotal">0 ج</b></div>
+ </div>
+ <div class="card"><div class="section-head"><h3>ملخص اليوم</h3><button class="btn" onclick="exportData()">تصدير نسخة احتياطية</button></div><div id="reportTable"></div></div>
+</section>
+
+<section id="settings" class="page">
+ <div class="card">
+  <h3>إعدادات النظام</h3>
+  <div class="notice">كل البيانات في هذه النسخة محفوظة محليًا داخل المتصفح. يمكنك لاحقًا ربطها بقاعدة بيانات حقيقية عند رفع المشروع على السيرفر.</div>
+  <div class="form-grid">
+   <div class="field"><label>سعر الساعة الافتراضي</label><input id="setPrice" type="number"></div>
+   <div class="field"><label>اسم المركز</label><input id="setName"></div>
+   <div class="field"><label>عملة النظام</label><input id="setCurrency"></div>
+   <div class="field"><label>اسم المستخدم</label><input value="admin" disabled></div>
+  </div>
+  <button class="btn primary" onclick="saveSettings()">حفظ الإعدادات</button>
+ </div>
+</section>
+</main>
+</div>
+
+<div id="modal" class="modal hidden" onclick="if(event.target===this)closeModal()"><div id="modalBox" class="modal-box"></div></div>
+<div id="toast" class="toast hidden"></div>
+
+<script>
+const KEY='ps_lounge_manager_v1';
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||{
+ settings:{price:30,name:'PS Lounge',currency:'ج'},
+ devices:[
+  {id:1,name:'PS 1',type:'PS5',price:30,status:'available'},
+  {id:2,name:'PS 2',type:'PS5',price:30,status:'available'},
+  {id:3,name:'PS 3',type:'PS5',price:30,status:'available'},
+  {id:4,name:'PS 4',type:'PS4',price:25,status:'available'},
+  {id:5,name:'PS 5',type:'PS4',price:25,status:'available'},
+  {id:6,name:'PS 6',type:'PS4',price:25,status:'available'}
+ ],
+ sessions:[],sales:[],products:[
+  {id:1,name:'بيبسي',price:20,stock:50},
+  {id:2,name:'مياه',price:10,stock:100},
+  {id:3,name:'ريدبول',price:45,stock:25},
+  {id:4,name:'شيبسي',price:15,stock:40}
+ ],customers:[]
+};
+function save(){localStorage.setItem(KEY,JSON.stringify(db));render()}
+function money(n){return Number(n||0).toFixed(2).replace('.00','')+' '+db.settings.currency}
+function today(){return new Date().toISOString().slice(0,10)}
+function toast(t){let x=document.getElementById('toast');x.textContent=t;x.classList.remove('hidden');setTimeout(()=>x.classList.add('hidden'),2200)}
+function login(){if(document.getElementById('loginUser').value==='admin'&&document.getElementById('loginPass').value==='admin'){localStorage.setItem('ps_logged','1');document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');render()}else document.getElementById('loginError').textContent='بيانات الدخول غير صحيحة'}
+function logout(){localStorage.removeItem('ps_logged');location.reload()}
+if(localStorage.getItem('ps_logged')==='1'){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden')}
+function showPage(id,btn){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');else [...document.querySelectorAll('.nav button')].find(x=>x.getAttribute('onclick')?.includes("'"+id+"'"))?.classList.add('active');let titles={dashboard:'لوحة التحكم',sessions:'الجلسات',devices:'الأجهزة',sales:'المبيعات',products:'المخزون',customers:'العملاء',reports:'التقارير',settings:'الإعدادات'};document.getElementById('pageTitle').textContent=titles[id]||''}
+function render(){renderStats();renderDevices('dashDevices');renderDevices('devicesList');renderSessions();renderSales();renderProducts();renderCustomers();renderReports();document.getElementById('setPrice').value=db.settings.price;document.getElementById('setName').value=db.settings.name;document.getElementById('setCurrency').value=db.settings.currency}
+function renderStats(){let d=today(),ss=db.sessions.filter(x=>x.date===d),sales=db.sales.filter(x=>x.date===d),rev=ss.reduce((a,x)=>a+x.total,0),sm=sales.reduce((a,x)=>a+x.total,0);document.getElementById('sBusy').textContent=db.devices.filter(x=>x.status==='busy').length+' / '+db.devices.length;document.getElementById('sSessions').textContent=ss.length;document.getElementById('sRevenue').textContent=money(rev);document.getElementById('sSales').textContent=money(sm)}
+function deviceCard(x){let s=db.sessions.find(a=>a.deviceId===x.id&&a.active);let status=s?'مشغول':'متاح';let elapsed=s?Math.floor((Date.now()-s.start)/60000):0;let live=s?Math.max(x.price/60*elapsed,0):0;return `<div class="device ${s?'busy':''}"><div class="device-top"><div><div class="device-name">${esc(x.name)}</div><small style="color:var(--muted)">${esc(x.type||'PS')}</small></div><span class="badge ${s?'green':''}">${status}</span></div><div class="price">${money(x.price)} / ساعة</div>${s?`<div style="color:#9fc0e5;font-size:12px;margin-bottom:12px"><i class="fa-regular fa-clock"></i> ${fmtMin(elapsed)} — ${money(live)}</div>`:''}<div class="device-actions">${s?`<button class="btn danger" onclick="stopSession(${s.id})">إنهاء الجلسة</button><button class="btn" onclick="addSaleForSession(${s.id})">بيع</button>`:`<button class="btn success" onclick="openSessionModal(${x.id})">بدء جلسة</button><button class="btn" onclick="editDevice(${x.id})">تعديل</button>`}</div></div>`}
+function renderDevices(id){let el=document.getElementById(id);if(!el)return;el.innerHTML=db.devices.map(deviceCard).join('')||'<div class="empty">لا توجد أجهزة</div>'}
+function fmtMin(m){let h=Math.floor(m/60),mi=m%60;return h?`${h}س ${mi}د`:`${mi}د`}
+function renderSessions(){let el=document.getElementById('sessionsList');let a=db.sessions.filter(x=>x.active);if(!a.length){el.innerHTML='<div class="empty">لا توجد جلسات تعمل حاليًا</div>';return}el.innerHTML='<div class="table-wrap"><table class="table"><tr><th>الجهاز</th><th>العميل</th><th>البداية</th><th>المدة</th><th>التكلفة الحالية</th><th></th></tr>'+a.map(s=>{let d=db.devices.find(x=>x.id===s.deviceId),m=Math.floor((Date.now()-s.start)/60000),cost=m*(d.price/60);return `<tr><td>${esc(d?.name||'-')}</td><td>${esc(s.customer||'بدون')}</td><td>${new Date(s.start).toLocaleTimeString('ar-EG',{hour:'2-digit',minute:'2-digit'})}</td><td>${fmtMin(m)}</td><td>${money(cost)}</td><td><button class="btn danger" onclick="stopSession(${s.id})">إنهاء</button></td></tr>`}).join('')+'</table></div>'}
+function renderSales(){let el=document.getElementById('salesList');let a=[...db.sales].reverse();if(!a.length){el.innerHTML='<div class="empty">لا توجد مبيعات</div>';return}el.innerHTML='<div class="table-wrap"><table class="table"><tr><th>المنتج</th><th>الكمية</th><th>الإجمالي</th><th>التاريخ</th></tr>'+a.map(x=>`<tr><td>${esc(x.product)}</td><td>${x.qty}</td><td>${money(x.total)}</td><td>${x.date} ${x.time}</td></tr>`).join('')+'</table></div>'}
+function renderProducts(){let el=document.getElementById('productsList');el.innerHTML=db.products.map(p=>`<div class="product"><b>${esc(p.name)}</b><div class="row"><span>السعر</span><strong>${money(p.price)}</strong></div><div class="row"><span>المخزون</span><strong>${p.stock}</strong></div><div class="actions"><button class="btn" onclick="editProduct(${p.id})">تعديل</button><button class="btn danger" onclick="deleteProduct(${p.id})">حذف</button></div></div>`).join('')||'<div class="empty">لا توجد منتجات</div>'}
+function renderCustomers(){let el=document.getElementById('customersList');if(!db.customers.length){el.innerHTML='<div class="empty">لا يوجد عملاء</div>';return}el.innerHTML='<div class="table-wrap"><table class="table"><tr><th>الاسم</th><th>الهاتف</th><th>الملاحظات</th><th></th></tr>'+db.customers.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.phone||'-')}</td><td>${esc(c.note||'-')}</td><td><button class="btn danger" onclick="deleteCustomer(${c.id})">حذف</button></td></tr>`).join('')+'</table></div>'}
+function renderReports(){let ss=db.sessions,s=db.sales,sm=ss.reduce((a,x)=>a+x.total,0),sale=s.reduce((a,x)=>a+x.total,0);document.getElementById('rSessions').textContent=ss.length;document.getElementById('rSessionMoney').textContent=money(sm);document.getElementById('rSalesMoney').textContent=money(sale);document.getElementById('rTotal').textContent=money(sm+sale);document.getElementById('reportTable').innerHTML=`<div class="kpis"><div class="kpi"><small>عدد المنتجات</small><strong>${db.products.length}</strong></div><div class="kpi"><small>قيمة المخزون</small><strong>${money(db.products.reduce((a,p)=>a+p.stock*p.price,0))}</strong></div><div class="kpi"><small>عدد العملاء</small><strong>${db.customers.length}</strong></div></div>`}
+function openModal(title,body){document.getElementById('modalBox').innerHTML=`<div class="modal-head"><h3>${title}</h3><button class="close" onclick="closeModal()">×</button></div>${body}`;document.getElementById('modal').classList.remove('hidden')}
+function closeModal(){document.getElementById('modal').classList.add('hidden')}
+function openSessionModal(deviceId){let opts=db.devices.filter(d=>!db.sessions.some(s=>s.deviceId===d.id&&s.active)).map(d=>`<option value="${d.id}" ${d.id===deviceId?'selected':''}>${esc(d.name)} — ${money(d.price)}/ساعة</option>`).join('');openModal('بدء جلسة',`<div class="form-grid"><div class="field"><label>الجهاز</label><select id="mDevice">${opts}</select></div><div class="field"><label>العميل</label><select id="mCustomer"><option value="">بدون عميل</option>${db.customers.map(c=>`<option>${esc(c.name)}</option>`).join('')}</select></div></div><button class="btn primary full" onclick="startSession()">بدء الجلسة</button>`)}
+function startSession(){let id=+document.getElementById('mDevice').value;if(!id)return;db.sessions.push({id:Date.now(),deviceId:id,customer:document.getElementById('mCustomer').value,start:Date.now(),date:today(),active:true,total:0});let d=db.devices.find(x=>x.id===id);d.status='busy';save();closeModal();toast('تم بدء الجلسة')}
+function stopSession(id){let s=db.sessions.find(x=>x.id===id);if(!s)return;let d=db.devices.find(x=>x.id===s.deviceId),mins=Math.max(1,Math.ceil((Date.now()-s.start)/60000));s.active=false;s.end=Date.now();s.total=+(mins*d.price/60).toFixed(2);d.status='available';save();toast('تم إنهاء الجلسة — '+money(s.total))}
+function addSaleForSession(){openSaleModal()}
+function openSaleModal(){let opts=db.products.map(p=>`<option value="${p.id}">${esc(p.name)} — ${money(p.price)} — مخزون ${p.stock}</option>`).join('');openModal('تسجيل بيع',`<div class="form-grid"><div class="field"><label>المنتج</label><select id="mProduct">${opts}</select></div><div class="field"><label>الكمية</label><input id="mQty" type="number" min="1" value="1"></div></div><button class="btn primary full" onclick="addSale()">تسجيل البيع</button>`)}
+function addSale(){let p=db.products.find(x=>x.id===+document.getElementById('mProduct').value),q=+document.getElementById('mQty').value;if(!p||q<1||p.stock<q){toast('الكمية غير متاحة');return}p.stock-=q;db.sales.push({id:Date.now(),product:p.name,qty:q,total:p.price*q,date:today(),time:new Date().toLocaleTimeString('ar-EG')});save();closeModal();toast('تم تسجيل البيع')}
+function openDeviceModal(id){let d=id?db.devices.find(x=>x.id===id):{name:'',type:'PS5',price:db.settings.price};openModal(id?'تعديل جهاز':'إضافة جهاز',`<div class="form-grid"><div class="field"><label>اسم الجهاز</label><input id="dName" value="${esc(d.name)}"></div><div class="field"><label>النوع</label><input id="dType" value="${esc(d.type)}"></div><div class="field full-col"><label>سعر الساعة</label><input id="dPrice" type="number" value="${d.price}"></div></div><button class="btn primary full" onclick="saveDevice(${id||0})">حفظ</button>`)}
+function saveDevice(id){let name=document.getElementById('dName').value.trim(),type=document.getElementById('dType').value.trim(),price=+document.getElementById('dPrice').value;if(!name||!price)return;if(id){let d=db.devices.find(x=>x.id===id);Object.assign(d,{name,type,price})}else db.devices.push({id:Date.now(),name,type,price,status:'available'});save();closeModal();toast('تم حفظ الجهاز')}
+function editDevice(id){openDeviceModal(id)}
+function openProductModal(id){let p=id?db.products.find(x=>x.id===id):{name:'',price:0,stock:0};openModal(id?'تعديل منتج':'إضافة منتج',`<div class="form-grid"><div class="field"><label>اسم المنتج</label><input id="pName" value="${esc(p.name)}"></div><div class="field"><label>السعر</label><input id="pPrice" type="number" value="${p.price}"></div><div class="field full-col"><label>المخزون</label><input id="pStock" type="number" value="${p.stock}"></div></div><button class="btn primary full" onclick="saveProduct(${id||0})">حفظ</button>`)}
+function saveProduct(id){let name=document.getElementById('pName').value.trim(),price=+document.getElementById('pPrice').value,stock=+document.getElementById('pStock').value;if(!name)return;if(id)Object.assign(db.products.find(x=>x.id===id),{name,price,stock});else db.products.push({id:Date.now(),name,price,stock});save();closeModal();toast('تم حفظ المنتج')}
+function editProduct(id){openProductModal(id)}
+function deleteProduct(id){if(confirm('حذف المنتج؟')){db.products=db.products.filter(x=>x.id!==id);save()}}
+function openCustomerModal(){openModal('إضافة عميل',`<div class="form-grid"><div class="field"><label>الاسم</label><input id="cName"></div><div class="field"><label>الهاتف</label><input id="cPhone"></div><div class="field full-col"><label>ملاحظات</label><input id="cNote"></div></div><button class="btn primary full" onclick="saveCustomer()">حفظ</button>`)}
+function saveCustomer(){let name=document.getElementById('cName').value.trim();if(!name)return;db.customers.push({id:Date.now(),name,phone:document.getElementById('cPhone').value,note:document.getElementById('cNote').value});save();closeModal();toast('تمت إضافة العميل')}
+function deleteCustomer(id){if(confirm('حذف العميل؟')){db.customers=db.customers.filter(x=>x.id!==id);save()}}
+function saveSettings(){db.settings.price=+document.getElementById('setPrice').value||30;db.settings.name=document.getElementById('setName').value||'PS Lounge';db.settings.currency=document.getElementById('setCurrency').value||'ج';save();toast('تم حفظ الإعدادات')}
+function exportData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ps-lounge-backup-'+today()+'.json';a.click();URL.revokeObjectURL(a.href)}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+setInterval(()=>{document.getElementById('clock').textContent=new Date().toLocaleString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});if(!document.getElementById('app').classList.contains('hidden'))render()},1000);
+render();
+</script>
+</body>
+</html>
